@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Name – Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1f6; --panel:#fff; --ink:#14213d; --muted:#5b6478; --line:#cfd6e4;
+  --accent:#2f4bff; --now:#ffd23f;
+  --head:"Bricolage Grotesque","Segoe UI",sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0e1424; --panel:#161e33; --ink:#e8ecf7; --muted:#9aa5bf; --line:#2a3452; --accent:#7f93ff;}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--body)}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header,main,footer{max-width:860px;margin:0 auto;padding:0 1.25rem}
+header{padding-top:3rem}
+h1{font:800 clamp(2.4rem,7vw,4.2rem)/1 var(--head);margin:0 0 .75rem;letter-spacing:-.02em}
+.tag{max-width:52ch;color:var(--muted);margin:0 0 2rem}
+nav{display:flex;gap:.5rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--bg);z-index:5;padding-top:.5rem}
+nav button{font:700 1.05rem var(--head);padding:.7rem 1.2rem;border:2px solid var(--ink);border-bottom:0;background:transparent;color:var(--ink);cursor:pointer;border-radius:8px 8px 0 0}
+nav button[aria-selected=true]{background:var(--ink);color:var(--bg)}
+nav button.now[aria-selected=true]{background:var(--now);color:#14213d;border-color:var(--ink)}
+.dot{display:inline-block;width:.6rem;height:.6rem;border-radius:50%;background:#e5372b;margin-right:.45rem;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+section{padding:2rem 0 3rem}
+[hidden]{display:none!important}
+.lead{color:var(--muted);max-width:60ch;margin:0 0 1.5rem}
+.tools{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;align-items:center}
+.tools input{font:inherit;padding:.5rem .8rem;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);flex:1 1 180px}
+.chip{font:500 .9rem var(--body);padding:.3rem .8rem;border:1px solid var(--line);border-radius:99px;background:var(--panel);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+h2{font:700 1.5rem var(--head);margin:2rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--line)}
+details{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin-bottom:.6rem}
+summary{cursor:pointer;padding:.9rem 1rem;display:flex;justify-content:space-between;gap:1rem;font:700 1.05rem var(--head);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-weight:500}
+details[open] summary::after{content:"–"}
+summary small{font:400 .85rem var(--body);color:var(--muted);display:block}
+.body{padding:0 1rem 1rem;border-top:1px dashed var(--line);padding-top:.8rem}
+.body p{margin:0 0 .6rem}
+.tags{display:flex;gap:.4rem;flex-wrap:wrap;margin:.5rem 0}
+.tags span{font-size:.8rem;background:var(--bg);padding:.1rem .6rem;border-radius:99px;border:1px solid var(--line)}
+.empty{color:var(--muted)}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{background:var(--panel);border:2px solid var(--ink);border-radius:10px;padding:1.1rem;box-shadow:5px 5px 0 var(--now)}
+.card h3{font:700 1.2rem var(--head);margin:0 0 .3rem}
+.card p{margin:.3rem 0 .8rem;font-size:.95rem}
+.status{font-size:.8rem;font-weight:500;background:var(--now);color:#14213d;padding:.1rem .6rem;border-radius:99px}
+.bar{height:10px;background:var(--bg);border:1px solid var(--ink);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.card button{margin-top:.8rem;font:500 .9rem var(--body);padding:.35rem .8rem;border:1px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);cursor:pointer}
+.notes{margin:.8rem 0 0;padding-left:1.1rem;font-size:.9rem;color:var(--muted)}
+.repos{list-style:none;padding:0;margin:0}
+.repos li{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--line)}
+.repos small{color:var(--muted)}
+footer{padding-bottom:3rem;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="name"></h1>
+  <p class="tag" id="tagline"></p>
+</header>
+
+<main>
+  <nav role="tablist" aria-label="Portfolio sections">
+    <button role="tab" id="t-archive" aria-selected="true" aria-controls="archive">Archive</button>
+    <button role="tab" id="t-now" class="now" aria-selected="false" aria-controls="now"><span class="dot"></span>Now</button>
+  </nav>
+
+  <!-- PART 1: UNI ARCHIVE -->
+  <section id="archive" role="tabpanel" aria-labelledby="t-archive">
+    <p class="lead">Finished university work, grouped by year. Open an entry for the short version.</p>
+    <div class="tools">
+      <input id="search" type="search" placeholder="Search projects" aria-label="Search projects">
+      <span id="chips"></span>
+    </div>
+    <div id="list"></div>
+  </section>
+
+  <!-- PART 2: CURRENT WORK -->
+  <section id="now" role="tabpanel" aria-labelledby="t-now" hidden>
+    <p class="lead">Work in progress, shown as it is. Things here are unfinished and will change.</p>
+    <div class="grid" id="cards"></div>
+    <h2>Latest activity on GitHub</h2>
+    <ul class="repos" id="repos"><li class="empty">Loading…</li></ul>
+  </section>
+</main>
+
+<footer>
+  <span id="contact"></span>
+</footer>
+
+<script>
+/* ============ EDIT THIS SECTION ============ */
+const CONFIG = {
+  name: "Your Name",
+  tagline: "Student of [your degree] at [your university]. I like [what you like making].",
+  githubUser: "your-github-username",   // powers the live activity list
+  email: "you@example.com"
+};
+
+// Part 1: finished uni work. Add or remove entries freely.
+const ARCHIVE = [
+  { year: "Year 1", module: "Intro to Programming", title: "Example project one",
+    desc: "One or two sentences on what it was, what you did, and what you learned.",
+    tags: ["Python", "Coursework"], link: "https://github.com/your-github-username/repo-one" },
+  { year: "Year 1", module: "Design Studio", title: "Example project two",
+    desc: "Describe the brief and your result. Link to a PDF, repo, or demo.",
+    tags: ["Design", "Group"], link: "" },
+  { year: "Year 2", module: "Data Structures", title: "Example project three",
+    desc: "Short description here.",
+    tags: ["Java", "Coursework"], link: "" }
+];
+
+// Part 2: what you're working on now. progress is 0 to 100.
+const NOW = [
+  { title: "Dissertation", status: "Researching", progress: 25,
+    desc: "One line on the topic and where you are with it.",
+    notes: ["Finished literature review draft", "Next: choose method"], link: "" },
+  { title: "Side project", status: "Building", progress: 60,
+    desc: "What it is and why you're making it.",
+    notes: ["Core feature works", "Needs testing"], link: "" }
+];
+/* ============================================ */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+$("#name").textContent = CONFIG.name;
+$("#tagline").textContent = CONFIG.tagline;
+$("#contact").innerHTML = `<a href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a> · <a href="https://github.com/${esc(CONFIG.githubUser)}">GitHub</a>`;
+
+/* Tabs */
+function show(which){
+  ["archive","now"].forEach(id=>{
+    $("#"+id).hidden = id !== which;
+    $("#t-"+id).setAttribute("aria-selected", id === which);
+  });
+  history.replaceState(null,"","#"+which);
+}
+$("#t-archive").onclick = () => show("archive");
+$("#t-now").onclick = () => show("now");
+if (location.hash === "#now") show("now");
+
+/* Archive: search + tag filter */
+let activeTag = null;
+const allTags = [...new Set(ARCHIVE.flatMap(p => p.tags))];
+$("#chips").innerHTML = allTags.map(t => `<button class="chip" aria-pressed="false" data-t="${esc(t)}">${esc(t)}</button>`).join(" ");
+$("#chips").onclick = e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  activeTag = activeTag === b.dataset.t ? null : b.dataset.t;
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.t === activeTag));
+  renderArchive();
+};
+$("#search").oninput = renderArchive;
+
+function renderArchive(){
+  const q = $("#search").value.toLowerCase();
+  const items = ARCHIVE.filter(p =>
+    (!activeTag || p.tags.includes(activeTag)) &&
+    (p.title + p.desc + p.module + p.tags.join(" ")).toLowerCase().includes(q));
+  if (!items.length){ $("#list").innerHTML = '<p class="empty">No projects match. Clear the search or tag filter.</p>'; return; }
+  const years = [...new Set(items.map(p => p.year))];
+  $("#list").innerHTML = years.map(y => `<h2>${esc(y)}</h2>` + items.filter(p => p.year === y).map(p => `
+    <details><summary><span>${esc(p.title)}<small>${esc(p.module)}</small></span></summary>
+      <div class="body"><p>${esc(p.desc)}</p>
+      <div class="tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+      ${p.link ? `<a href="${esc(p.link)}">View project</a>` : ""}</div></details>`).join("")).join("");
+}
+renderArchive();
+
+/* Now: cards */
+$("#cards").innerHTML = NOW.map((p,i) => `
+  <article class="card">
+    <h3>${esc(p.title)}</h3><span class="status">${esc(p.status)}</span>
+    <p>${esc(p.desc)}</p>
+    <div class="bar" role="progressbar" aria-valuenow="${p.progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${esc(p.title)} progress"><i style="width:${p.progress}%"></i></div>
+    <button data-i="${i}" aria-expanded="false">Show notes</button>
+    <ul class="notes" id="n${i}" hidden>${p.notes.map(n => `<li>${esc(n)}</li>`).join("")}${p.link ? `<li><a href="${esc(p.link)}">Follow along</a></li>` : ""}</ul>
+  </article>`).join("");
+$("#cards").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const n = $("#n" + b.dataset.i), open = n.hidden;
+  n.hidden = !open;
+  b.setAttribute("aria-expanded", open);
+  b.textContent = open ? "Hide notes" : "Show notes";
+};
+
+/* Now: live GitHub repos */
+fetch(`https://api.github.com/users/${encodeURIComponent(CONFIG.githubUser)}/repos?sort=pushed&per_page=6`)
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(repos => {
+    const ul = $("#repos");
+    ul.innerHTML = repos.length ? repos.filter(r => !r.fork).map(r => `
+      <li><span><a href="${esc(r.html_url)}">${esc(r.name)}</a><br><small>${esc(r.description || "No description yet")}</small></span>
+      <small>Updated ${new Date(r.pushed_at).toLocaleDateString("en-GB")}</small></li>`).join("")
+      : '<li class="empty">No public repositories yet.</li>';
+  })
+  .catch(() => { $("#repos").innerHTML = '<li class="empty">Could not load activity. Check githubUser in the config.</li>'; });
+</script>
+</body>
+</html>
