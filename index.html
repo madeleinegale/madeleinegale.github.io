@@ -3,86 +3,431 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Your Name – Portfolio</title>
+<title>Madeleine Gale • Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+
+/* CSS styling */
+
 :root{
-  --bg:#eef1f6; --panel:#fff; --ink:#14213d; --muted:#5b6478; --line:#cfd6e4;
-  --accent:#2f4bff; --now:#1b7c52;
-  --head:"Bricolage Grotesque","Segoe UI",sans-serif;
-  --body:"IBM Plex Sans","Segoe UI",sans-serif;
-}
-@media (prefers-color-scheme:dark){
-  :root{--bg:#0e1424; --panel:#161e33; --ink:#e8ecf7; --muted:#9aa5bf; --line:#2a3452; --accent:#7f93ff;}
+  --ink:#0d1117; --dusk:#8fa3e8; --haze:#c9a4c8; --sea:#1f3a63;
+  --paper:#efe6cf; --red:#e8452c; --line:rgba(255,255,255,.8);
+  --serif:"Instrument Serif",Georgia,serif;
+  --mono:"IBM Plex Mono",Consolas,monospace;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--body)}
-a{color:var(--accent)}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-header,main,footer{max-width:860px;margin:0 auto;padding:0 1.25rem}
-header{padding-top:3rem}
-h1{font:800 clamp(2.4rem,7vw,4.2rem)/1 var(--head);margin:0 0 .75rem;letter-spacing:-.02em}
-.tag{max-width:52ch;color:var(--muted);margin:0 0 2rem}
-nav{display:flex;gap:.5rem;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--bg);z-index:5;padding-top:.5rem}
-nav button{font:700 1.05rem var(--head);padding:.7rem 1.2rem;border:2px solid var(--ink);border-bottom:0;background:transparent;color:var(--ink);cursor:pointer;border-radius:8px 8px 0 0}
-nav button[aria-selected=true]{background:var(--ink);color:var(--bg)}
-nav button.now[aria-selected=true]{background:var(--now);color:#14213d;border-color:var(--ink)}
-.dot{display:inline-block;width:.6rem;height:.6rem;border-radius:50%;background:#e5372b;margin-right:.45rem;animation:pulse 1.6s infinite}
+body{margin:0;background:var(--ink);color:var(--paper);font:400 1rem/1.6 var(--mono)}
+a{color:var(--paper)}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+[hidden]{display:none!important}
+
+/* background */
+.sky{
+  padding:2.5rem 0 4rem;
+  background:
+    url("images/background.jpg") center/cover no-repeat,
+    linear-gradient(180deg,var(--dusk) 0%,var(--haze) 45%,var(--sea) 85%,var(--ink) 100%);
+}
+.wrap{max-width:980px;margin:0 auto}
+.sky .wrap{padding:0 1.25rem}
+h1{font:400 clamp(3rem,10vw,6.5rem)/.95 var(--serif);margin:0 0 .5rem;color:var(--ink);letter-spacing:-.02em}
+.tag{max-width:46ch;color:var(--ink);margin:0 0 2.5rem;font-size:.9rem}
+
+/* collage */
+.bleed{
+  overflow:hidden;
+  padding-top:1.25rem
+}
+.stage{
+  position:relative;
+  aspect-ratio:100/48;
+  width:100%
+}
+@media (max-width:640px){
+  .stage{
+    width:200%;
+    margin-left:-50%
+  }
+}
+.lines{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none
+}
+.lines path{
+  fill:none;
+  stroke:var(--line);
+  stroke-width:1;
+  vector-effect:non-scaling-stroke
+}
+.lines .dash{
+  stroke-dasharray:4 5
+}
+.slot{
+  position:absolute;
+  background:var(--paper);
+  overflow:visible
+}
+.slot.round{
+  border-radius:50%
+}
+.slot .box{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  border-radius:inherit;
+  display:grid;
+  place-items:center;
+  text-align:center
+}
+.slot.round .box{
+  border-radius:50%
+}
+.ph{
+  font-size:.65rem;
+  color:var(--ink);
+  opacity:.55;
+  padding:.5rem;
+  word-break:break-all
+}
+.slot img,
+.thumb img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+.slot.pin::before{
+  content:"";
+  position:absolute;
+  left:-1px;
+  top:-14px;
+  width:2px;
+  height:calc(100% + 14px);
+  background:var(--red)
+}
+.slot.pin::after{
+  content:"";
+  position:absolute;
+  left:-3px;
+  top:-16px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--red)
+}
+.slot.red{
+  background:var(--red)
+}
+.cap{
+  position:absolute;
+  top:calc(100% + .3rem);
+  left:0;
+  font-size:.6rem;
+  color:var(--ink);
+  white-space:nowrap
+}
+
+/* tabs */
+nav{
+  display:flex;
+  gap:.5rem;
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:var(--ink);
+  padding:.75rem 1.25rem 0;
+  border-bottom:1px solid var(--line)
+}
+nav .wrap{
+  display:flex;
+  gap:.5rem;
+  width:100%
+}
+nav button{
+  font:500 .95rem var(--mono);
+  padding:.6rem 1.2rem;
+  border:1px solid var(--line);
+  border-bottom:0;
+  background:transparent;
+  color:var(--paper);
+  cursor:pointer
+}
+nav button[aria-selected=true]{
+  background:var(--paper);
+  color:var(--ink)
+}
+.dot{
+  display:inline-block;
+  width:.55rem;
+  height:.55rem;
+  border-radius:50%;
+  background:var(--red);
+  margin-right:.45rem;
+  animation:pulse 1.6s infinite
+}
 @keyframes pulse{50%{opacity:.25}}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}}
-section{padding:2rem 0 3rem}
-[hidden]{display:none!important}
-.lead{color:var(--muted);max-width:60ch;margin:0 0 1.5rem}
-.tools{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;align-items:center}
-.tools input{font:inherit;padding:.5rem .8rem;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);flex:1 1 180px}
-.chip{font:500 .9rem var(--body);padding:.3rem .8rem;border:1px solid var(--line);border-radius:99px;background:var(--panel);color:var(--ink);cursor:pointer}
-.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-h2{font:700 1.5rem var(--head);margin:2rem 0 .75rem;padding-bottom:.3rem;border-bottom:1px solid var(--line)}
-details{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin-bottom:.6rem}
-summary{cursor:pointer;padding:.9rem 1rem;display:flex;justify-content:space-between;gap:1rem;font:700 1.05rem var(--head);list-style:none}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-weight:500}
-details[open] summary::after{content:"–"}
-summary small{font:400 .85rem var(--body);color:var(--muted);display:block}
-.body{padding:0 1rem 1rem;border-top:1px dashed var(--line);padding-top:.8rem}
-.body p{margin:0 0 .6rem}
-.tags{display:flex;gap:.4rem;flex-wrap:wrap;margin:.5rem 0}
-.tags span{font-size:.8rem;background:var(--bg);padding:.1rem .6rem;border-radius:99px;border:1px solid var(--line)}
-.empty{color:var(--muted)}
-.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-.card{background:var(--panel);border:2px solid var(--ink);border-radius:10px;padding:1.1rem;box-shadow:5px 5px 0 var(--now)}
-.card h3{font:700 1.2rem var(--head);margin:0 0 .3rem}
-.card p{margin:.3rem 0 .8rem;font-size:.95rem}
-.status{font-size:.8rem;font-weight:500;background:var(--now);color:#14213d;padding:.1rem .6rem;border-radius:99px}
-.bar{height:10px;background:var(--bg);border:1px solid var(--ink);border-radius:99px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--accent)}
-.card button{margin-top:.8rem;font:500 .9rem var(--body);padding:.35rem .8rem;border:1px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);cursor:pointer}
-.notes{margin:.8rem 0 0;padding-left:1.1rem;font-size:.9rem;color:var(--muted)}
-.repos{list-style:none;padding:0;margin:0}
-.repos li{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--line)}
-.repos small{color:var(--muted)}
-footer{padding-bottom:3rem;color:var(--muted);font-size:.9rem}
+
+main{padding:2rem 1.25rem 3rem}
+.lead{
+  max-width:60ch;
+  margin:0 0 1.5rem;
+  opacity:.8;
+  font-size:.9rem
+}
+.tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  margin-bottom:1.5rem
+}
+.tools input{
+  font:inherit;
+  font-size:.9rem;
+  padding:.5rem .8rem;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--paper);
+  flex:1 1 180px
+}
+.chip{
+  font:400 .8rem var(--mono);
+  padding:.3rem .8rem;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--paper);
+  cursor:pointer
+}
+.chip[aria-pressed=true]{
+  background:var(--red);
+  border-color:var(--red);
+  color:#fff
+}
+h2{
+  font:400 2.2rem/1 var(--serif);
+  margin:2.5rem 0 1rem;
+  border-bottom:1px solid var(--line);
+  padding-bottom:.4rem
+}
+
+/* archive plates */
+.plates{
+  display:grid;
+  gap:1.5rem;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr))
+}
+.plate{background:var(--paper);
+  color:var(--ink);
+  padding:.9rem;
+  position:relative
+}
+.thumb{
+  position:relative;
+  aspect-ratio:4/3;
+  background:#d9cfb5;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  margin-bottom:.8rem
+}
+.plate:nth-child(3n+2) .thumb{
+  aspect-ratio:1;
+  border-radius:50%;
+  width:75%;
+  margin-inline:auto
+}
+.plate h3{
+  font:400 1.5rem/1.1 var(--serif);
+  margin:0
+}
+.plate small{
+  display:block;
+  font-size:.7rem;
+  opacity:.65
+}
+.plate details{
+  margin-top:.5rem
+}
+.plate summary{
+  cursor:pointer;
+  font-size:.8rem;
+  text-decoration:underline
+}
+.plate p{
+  font-size:.85rem;
+  margin:.5rem 0
+}
+.tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.3rem;
+  margin:.4rem 0
+}
+.tags span{
+  font-size:.7rem;
+  border:1px solid var(--ink);
+  padding:0 .5rem
+}
+.plate a{
+  color:var(--red);
+  font-size:.85rem
+}
+.empty{
+  opacity:.7
+}
+
+/* active board */
+.hint{
+  font-size:.75rem;
+  opacity:.6;
+  margin:-.5rem 0 1.25rem
+}
+.board{
+  display:grid;
+  gap:1.75rem;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  padding-top:1rem
+}
+.card{
+  background:var(--paper);
+  color:var(--ink);
+  padding:.9rem;
+  position:relative;
+  touch-action:none;
+  box-shadow:6px 6px 0 var(--red)
+}
+.card::before{
+  content:"";
+  position:absolute;
+  left:12px;
+  top:-14px;
+  width:2px;
+  height:20px;
+  background:var(--red)
+}
+.card::after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:-17px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--red)
+}
+.card .grab{
+  cursor:grab
+}
+.card.drag{
+  cursor:grabbing;
+  z-index:9
+}
+.card h3{
+  font:400 1.6rem/1.1 var(--serif);
+  margin:0
+}
+.status{
+  font-size:.7rem;
+  background:var(--red);
+  color:#fff;
+  padding:0 .5rem
+}
+.card p{
+  font-size:.85rem;
+  margin:.5rem 0 .8rem
+}
+.bar{
+  height:8px;
+  border:1px solid var(--ink)
+}
+.bar i{
+  display:block;
+  height:100%;
+  background:var(--ink)
+}
+.card button{
+  margin-top:.7rem;
+  font:400 .8rem var(--mono);
+  padding:.25rem .7rem;
+  border:1px solid var(--ink);
+  background:transparent;
+  color:var(--ink);
+  cursor:pointer
+}
+.notes{
+  margin:.7rem 0 0;
+  padding-left:1.1rem;
+  font-size:.8rem
+}
+.repos{
+  list-style:none;
+  padding:0;
+  margin:0
+}
+.repos li{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;padding:.7rem 0;
+  border-bottom:1px dashed var(--line);
+  font-size:.85rem
+}
+.repos small{
+  opacity:.65
+}
+footer{
+  padding:0 1.25rem 3rem;
+  font-size:.8rem;
+  opacity:.8
+}
+@media (max-width:640px){.cap{display:none}}
 </style>
 </head>
 <body>
 
-<header>
-  <h1 id="name"></h1>
-  <p class="tag" id="tagline"></p>
-</header>
+<div class="sky">
+  <div class="wrap">
+    <h1 id="name"></h1>
+    <p class="tag" id="tagline"></p>
+  </div>
+  <div class="bleed">
+    <div class="stage" id="stage">
+      <svg class="lines" viewBox="0 0 100 48" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M3 14.2 C12 14 18 9 28 8.9"/>
+        <path d="M3 14.2 C8 22 12 26 17.5 28.5"/>
+        <path d="M17.5 28.5 C28 30 36 26 44.5 20.9"/>
+        <path d="M28 8.9 C34 12 40 16 44.5 20.9"/>
+        <path d="M44.5 20.9 C48 16 52 13 53.5 10.1"/>
+        <path d="M44.5 20.9 C52 26 58 28 64.5 27.7"/>
+        <path class="dash" d="M53.5 10.1 C60 4 68 3 74 7"/>
+        <path d="M53.5 10.1 C56 18 60 24 64.5 27.7"/>
+        <path d="M74 7 C82 3 92 4 99 8.1"/>
+        <path d="M64.5 27.7 C72 24 80 24 87.5 26.8"/>
+        <path class="dash" d="M87.5 26.8 C92 20 96 14 99 8.1"/>
+        <path d="M87.5 26.8 C90 34 92 40 95 43.5"/>
+        <path d="M17.5 28.5 C22 36 28 40 34.5 41.1"/>
+        <path class="dash" d="M2 42.4 C14 46 24 44 34.5 41.1"/>
+        <path d="M64.5 27.7 C64 38 62 44 60 52"/>
+      </svg>
+    </div>
+  </div>
+</div>
 
-<main>
-  <nav role="tablist" aria-label="Portfolio sections">
-    <button role="tab" id="t-archive" aria-selected="true" aria-controls="archive">Archive</button>
-    <button role="tab" id="t-now" class="now" aria-selected="false" aria-controls="now"><span class="dot"></span>Now</button>
-  </nav>
+<nav role="tablist" aria-label="Portfolio sections"><div class="wrap">
+  <button role="tab" id="t-archive" aria-selected="true" aria-controls="archive">Archive</button>
+  <button role="tab" id="t-now" aria-selected="false" aria-controls="now"><span class="dot"></span>Now</button>
+</div></nav>
 
-  <!-- PART 1: UNI ARCHIVE -->
+<main><div class="wrap">
+  <!-- UNI ARCHIVE -->
   <section id="archive" role="tabpanel" aria-labelledby="t-archive">
-    <p class="lead">Finished university work, grouped by year. Open an entry for the short version.</p>
+    <p class="lead">Finished university work, grouped by year.</p>
     <div class="tools">
       <input id="search" type="search" placeholder="Search projects" aria-label="Search projects">
       <span id="chips"></span>
@@ -90,62 +435,91 @@ footer{padding-bottom:3rem;color:var(--muted);font-size:.9rem}
     <div id="list"></div>
   </section>
 
-  <!-- PART 2: CURRENT WORK -->
+  <!-- CURRENT WORK -->
   <section id="now" role="tabpanel" aria-labelledby="t-now" hidden>
-    <p class="lead">Work in progress, shown as it is. Things here are unfinished and will change.</p>
-    <div class="grid" id="cards"></div>
+    <p class="lead">Work in progress, shown as it is. Unfinished and changing.</p>
+    <p class="hint">Drag the cards by their titles to rearrange the board.</p>
+    <div class="board" id="cards"></div>
     <h2>Latest activity on GitHub</h2>
     <ul class="repos" id="repos"><li class="empty">Loading…</li></ul>
   </section>
-</main>
+</div></main>
 
-<footer>
-  <span id="contact"></span>
-</footer>
+<footer><div class="wrap" id="contact"></div></footer>
 
 <script>
-/* ============ EDIT THIS SECTION ============ */
+
+/* JavaScript behaviour */
 const CONFIG = {
-  name: "Your Name",
-  tagline: "Student of [your degree] at [your university]. I like [what you like making].",
-  githubUser: "your-github-username",   // powers the live activity list
+  name: "Madeleine Gale",
+  tagline: "Part 1 Architectural Assistant",
+  githubUser: "your-github-username",
   email: "you@example.com"
 };
 
-// Part 1: finished uni work. Add or remove entries freely.
-const ARCHIVE = [
-  { year: "Year 1", module: "Intro to Programming", title: "Example project one",
-    desc: "One or two sentences on what it was, what you did, and what you learned.",
-    tags: ["Python", "Coursework"], link: "https://github.com/your-github-username/repo-one" },
-  { year: "Year 1", module: "Design Studio", title: "Example project two",
-    desc: "Describe the brief and your result. Link to a PDF, repo, or demo.",
-    tags: ["Design", "Group"], link: "" },
-  { year: "Year 2", module: "Data Structures", title: "Example project three",
-    desc: "Short description here.",
-    tags: ["Java", "Coursework"], link: "" }
+/* HERO COLLAGE: each item is one picture on the home collage.
+   file = image inside the images folder. Shape: "rect" or "round".
+   x, y = position (% from left / top), w = width (%), ratio = width/height.
+   pin = true adds the red pin. Leave file empty "" for a plain red dot. */
+const HERO = [
+  { file:"images/hero-1.jpg",  shape:"rect",  x:-4, y:10, w:14, ratio:3/4, pin:true,  cap:"" },
+  { file:"images/hero-2.jpg",  shape:"round", x:12, y:48, w:11, ratio:1,   pin:false, cap:"fig. b" },
+  { file:"images/hero-3.jpg",  shape:"rect",  x:20, y:6,  w:16, ratio:4/3, pin:true,  cap:"fig. c" },
+  { file:"images/hero-4.jpg",  shape:"round", x:38, y:30, w:13, ratio:1,   pin:false, cap:"fig. d" },
+  { file:"",                   shape:"round", x:52, y:18, w:3,  ratio:1,   pin:false, cap:"" },
+  { file:"images/hero-5.jpg",  shape:"rect",  x:56, y:40, w:17, ratio:1,   pin:true,  cap:"fig. e" },
+  { file:"images/hero-6.jpg",  shape:"round", x:68, y:2,  w:12, ratio:1,   pin:false, cap:"" },
+  { file:"images/hero-7.jpg",  shape:"rect",  x:80, y:35, w:15, ratio:3/4, pin:true,  cap:"fig. g" },
+  { file:"images/hero-8.jpg",  shape:"rect",  x:92, y:6,  w:14, ratio:4/3, pin:false, cap:"" },
+  { file:"images/hero-9.jpg",  shape:"round", x:-3, y:78, w:10, ratio:1,   pin:false, cap:"" },
+  { file:"images/hero-10.jpg", shape:"rect",  x:28, y:72, w:13, ratio:1,   pin:true,  cap:"fig. j" },
+  { file:"images/hero-11.jpg", shape:"round", x:88, y:76, w:14, ratio:1,   pin:false, cap:"" }
 ];
 
-// Part 2: what you're working on now. progress is 0 to 100.
-const NOW = [
-  { title: "Dissertation", status: "Researching", progress: 25,
-    desc: "One line on the topic and where you are with it.",
-    notes: ["Finished literature review draft", "Next: choose method"], link: "" },
-  { title: "Side project", status: "Building", progress: 60,
-    desc: "What it is and why you're making it.",
-    notes: ["Core feature works", "Needs testing"], link: "" }
+/* PART 1: finished uni work. image = thumbnail in the images folder. */
+const ARCHIVE = [
+  { year:"Year 1", module:"Intro to Programming", title:"Example project one",
+    desc:"One or two sentences on what it was, what you did, and what you learned.",
+    tags:["Python","Coursework"], image:"images/archive-1.jpg", link:"https://github.com/your-github-username/repo-one" },
+  { year:"Year 1", module:"Design Studio", title:"Example project two",
+    desc:"Describe the brief and your result. Link to a PDF, repo, or demo.",
+    tags:["Design","Group"], image:"images/archive-2.jpg", link:"" },
+  { year:"Year 2", module:"Data Structures", title:"Example project three",
+    desc:"Short description here.",
+    tags:["Java","Coursework"], image:"images/archive-3.jpg", link:"" }
 ];
-/* ============================================ */
+
+/* PART 2: what you're working on now. progress is 0 to 100. */
+const NOW = [
+  { title:"Dissertation", status:"Researching", progress:25, image:"images/now-1.jpg",
+    desc:"One line on the topic and where you are with it.",
+    notes:["Finished literature review draft","Next: choose method"], link:"" },
+  { title:"Side project", status:"Building", progress:60, image:"images/now-2.jpg",
+    desc:"What it is and why you're making it.",
+    notes:["Core feature works","Needs testing"], link:"" }
+];
+/* ===================================================== */
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* If an image file is missing, remove the broken icon and keep the filename label */
+document.addEventListener("error", e => { if (e.target.tagName === "IMG") e.target.remove(); }, true);
+const pic = f => f ? `<span class="ph">${esc(f)}</span><img src="${esc(f)}" alt="">` : "";
 
 $("#name").textContent = CONFIG.name;
 $("#tagline").textContent = CONFIG.tagline;
 $("#contact").innerHTML = `<a href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a> · <a href="https://github.com/${esc(CONFIG.githubUser)}">GitHub</a>`;
 
+/* Hero collage */
+$("#stage").insertAdjacentHTML("beforeend", HERO.map(h => `
+  <div class="slot ${h.shape === "round" ? "round" : ""} ${h.pin ? "pin" : ""} ${h.file ? "" : "red"}"
+       style="left:${h.x}%;top:${h.y}%;width:${h.w}%;aspect-ratio:${h.ratio}">
+    <div class="box">${pic(h.file)}</div>${h.cap ? `<span class="cap">${esc(h.cap)}</span>` : ""}
+  </div>`).join(""));
+
 /* Tabs */
 function show(which){
-  ["archive","now"].forEach(id=>{
+  ["archive","now"].forEach(id => {
     $("#"+id).hidden = id !== which;
     $("#t-"+id).setAttribute("aria-selected", id === which);
   });
@@ -174,18 +548,24 @@ function renderArchive(){
     (p.title + p.desc + p.module + p.tags.join(" ")).toLowerCase().includes(q));
   if (!items.length){ $("#list").innerHTML = '<p class="empty">No projects match. Clear the search or tag filter.</p>'; return; }
   const years = [...new Set(items.map(p => p.year))];
-  $("#list").innerHTML = years.map(y => `<h2>${esc(y)}</h2>` + items.filter(p => p.year === y).map(p => `
-    <details><summary><span>${esc(p.title)}<small>${esc(p.module)}</small></span></summary>
-      <div class="body"><p>${esc(p.desc)}</p>
-      <div class="tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>
-      ${p.link ? `<a href="${esc(p.link)}">View project</a>` : ""}</div></details>`).join("")).join("");
+  $("#list").innerHTML = years.map(y => `<h2>${esc(y)}</h2><div class="plates">` + items.filter(p => p.year === y).map(p => `
+    <article class="plate">
+      <div class="thumb">${pic(p.image)}</div>
+      <h3>${esc(p.title)}</h3><small>${esc(p.module)}</small>
+      <details><summary>Read more</summary>
+        <p>${esc(p.desc)}</p>
+        <div class="tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+        ${p.link ? `<a href="${esc(p.link)}">View project</a>` : ""}
+      </details>
+    </article>`).join("") + "</div>").join("");
 }
 renderArchive();
 
-/* Now: cards */
+/* Now: draggable cards */
 $("#cards").innerHTML = NOW.map((p,i) => `
   <article class="card">
-    <h3>${esc(p.title)}</h3><span class="status">${esc(p.status)}</span>
+    <div class="thumb" style="margin-bottom:.8rem">${pic(p.image)}</div>
+    <div class="grab"><h3>${esc(p.title)}</h3><span class="status">${esc(p.status)}</span></div>
     <p>${esc(p.desc)}</p>
     <div class="bar" role="progressbar" aria-valuenow="${p.progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${esc(p.title)} progress"><i style="width:${p.progress}%"></i></div>
     <button data-i="${i}" aria-expanded="false">Show notes</button>
@@ -194,17 +574,26 @@ $("#cards").innerHTML = NOW.map((p,i) => `
 $("#cards").onclick = e => {
   const b = e.target.closest("button"); if (!b) return;
   const n = $("#n" + b.dataset.i), open = n.hidden;
-  n.hidden = !open;
-  b.setAttribute("aria-expanded", open);
+  n.hidden = !open; b.setAttribute("aria-expanded", open);
   b.textContent = open ? "Hide notes" : "Show notes";
 };
+document.querySelectorAll(".card").forEach(card => {
+  let sx, sy, ox = 0, oy = 0;
+  card.querySelector(".grab").addEventListener("pointerdown", e => {
+    sx = e.clientX - ox; sy = e.clientY - oy;
+    card.classList.add("drag"); e.target.setPointerCapture(e.pointerId);
+    const move = ev => { ox = ev.clientX - sx; oy = ev.clientY - sy; card.style.transform = `translate(${ox}px,${oy}px) rotate(${ox/80}deg)`; };
+    const up = () => { card.classList.remove("drag"); window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+  });
+});
 
 /* Now: live GitHub repos */
 fetch(`https://api.github.com/users/${encodeURIComponent(CONFIG.githubUser)}/repos?sort=pushed&per_page=6`)
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(repos => {
-    const ul = $("#repos");
-    ul.innerHTML = repos.length ? repos.filter(r => !r.fork).map(r => `
+    const list = repos.filter(r => !r.fork);
+    $("#repos").innerHTML = list.length ? list.map(r => `
       <li><span><a href="${esc(r.html_url)}">${esc(r.name)}</a><br><small>${esc(r.description || "No description yet")}</small></span>
       <small>Updated ${new Date(r.pushed_at).toLocaleDateString("en-GB")}</small></li>`).join("")
       : '<li class="empty">No public repositories yet.</li>';
